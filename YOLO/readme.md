@@ -7,6 +7,9 @@ https://github.com/flkraus/bayesian-yolov3
 ## DIoU-yolov3
 https://github.com/Zzh-tju/DIoU-darknet
 
+## ASFF-YOLOv3
+https://github.com/ruinmessi/ASFF
+
 ## Yolo_Nano
 https://github.com/lingtengqiu/Yolo_Nano
 

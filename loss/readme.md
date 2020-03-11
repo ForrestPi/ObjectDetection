@@ -18,3 +18,7 @@ https://github.com/ForrestPi/GHM_Loss
 
 ## AnchorLoss
 https://github.com/slryou41/AnchorLoss
+
+
+## SCELoss
+https://github.com/HanxunHuangLemonBear/SCELoss-Reproduce
