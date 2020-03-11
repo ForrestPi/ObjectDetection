@@ -1,0 +1,46 @@
+MODEL:
+  LABEL: [
+  "aeroplane",
+  "bicycle",
+  "bird",
+  "boat",
+  "bottle",
+  "bus",
+  "car",
+  "cat",
+  "chair",
+  "cow",
+  "diningtable",
+  "dog",
+  "horse",
+  "motorbike",
+  "person",
+  "pottedplant",
+  "sheep",
+  "sofa",
+  "train",
+  "tvmonitor"
+  ]
+  numcls: 20
+  modeltype: StrongerV3_US_dummy
+  backbone: 'mobilenetv2'
+  backbone_pretrained: 'checkpoints/mobilenet_v2.pth'
+EXPER:
+  experiment_name: 'strongerv3US'
+  resume: 'best'
+  US_training: False
+DATASET:
+  dataset: 'VOC'
+  VOC_val: 'test_mini_mini'
+OPTIM:
+  batch_size: 12
+  lr_initial: 2e-5
+  total_epoch: 30
+  milestones: [20]
+EVAL:
+  score_thres: 0.2
+  valid_epoch: 0
+Prune:
+  sparse: False
+  bbOutName: ('backbone.features.6','backbone.features.13','backbone.features.18')
+  pruner: AutoSlimPruner
