@@ -19,3 +19,7 @@ https://github.com/Realwhisky/Tricks-for-better-detection-performance-of-YOLO-v3
 
 ## MNN-yolov3
 https://github.com/wlguan/MNN-yolov3
+
+
+## SlimYOLOv3
+https://github.com/PengyiZhang/SlimYOLOv3
