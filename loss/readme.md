@@ -51,6 +51,15 @@ DIoU和CIoU：2020年AAAI  Distance-IoU Loss: Faster and Better Learning for B
 这些只是我看的重点，详细的还需要大家去阅读论文看一下效果。
 
 
+从以上的一些loss中从几个不同的维度，可以归纳出几个设计loss的步骤：
+
+* 衡量目标是否合理，从regression来说是坐标点的偏移，还是IoU，classification中直接分类还是可以用rank中的AP？
+* 从场景（目前的loss）存在的问题出发，找出设计loss时需要重点考虑的因素，如正负样本不平衡，存在一些标错的noise label，或是存在边界模拟两可的uncertainty label；
+* 一些针对设计和问题转化，比如将分类问题转化为ranking问题，Smooth L1 Loss的设计细节（如L1及L2部分的设计分布假设）的一些不足的讨论及优化变形；
+* 新的loss函数的推导，包括loss函数的推理设计过程，以及收敛性等对loss函数的一般要求的给出；
+* 新的loss函数对其他部分的影响及联动修改。
+
 ## reference
-[深度学习loss清单](https://zhuanlan.zhihu.com/p/80761087)
-[目标检测中的loss](https://zhuanlan.zhihu.com/p/101303119)
+[深度学习loss清单](https://zhuanlan.zhihu.com/p/80761087)    
+[目标检测中的loss](https://zhuanlan.zhihu.com/p/101303119)    
+[DR loss（样本不平衡问题）目标检测论文阅读](https://zhuanlan.zhihu.com/p/75896297)
