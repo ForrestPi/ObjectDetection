@@ -3,4 +3,5 @@
 
 
 ## FPN
-[PANnet](./FPN.jpg)
+![PANnet](./FPN.jpg)
+![EfficientDet](./BiFPN.jpg)
