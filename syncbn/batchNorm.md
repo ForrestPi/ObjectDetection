@@ -63,3 +63,86 @@ def batchnorm_backward(dout, cache):
 
 
 ```
+
+https://www.aiuai.cn/aifarm1206.html
+```python
+class SyncBatchNorm(_BatchNorm):
+    #Cross-GPU Synchronized Batch normalization (SyncBN)
+    def __init__(self, 
+                 num_features, 
+                 eps=1e-5, 
+                 momentum=0.1, 
+                 sync=True, 
+                 activation="none", 
+                 slope=0.01,
+                 inplace=True):
+        super(SyncBatchNorm, self).__init__(num_features, eps=eps, momentum=momentum, affine=True)
+        self.activation = activation
+        self.inplace = False if activation == 'none' else inplace
+        #self.inplace = inplace
+        self.slope = slope
+        self.devices = list(range(torch.cuda.device_count()))
+        self.sync = sync if len(self.devices) > 1 else False
+        # Initialize queues
+        self.worker_ids = self.devices[1:]
+        self.master_queue = Queue(len(self.worker_ids))
+        self.worker_queues = [Queue(1) for _ in self.worker_ids]
+        # running_exs
+        #self.register_buffer('running_exs', torch.ones(num_features))
+
+    def forward(self, x):
+        # Resize the input to (B, C, -1).
+        input_shape = x.size()
+        x = x.view(input_shape[0], self.num_features, -1)
+        if x.get_device() == self.devices[0]:
+            # Master mode
+            extra = {
+                "is_master": True,
+                "master_queue": self.master_queue,
+                "worker_queues": self.worker_queues,
+                "worker_ids": self.worker_ids
+            }
+        else:
+            # Worker mode
+            extra = {
+                "is_master": False,
+                "master_queue": self.master_queue,
+                "worker_queue": self.worker_queues[self.worker_ids.index(x.get_device())]
+            }
+        if self.inplace:
+            return inp_syncbatchnorm(
+                x, 
+                self.weight, 
+                self.bias, 
+                self.running_mean, 
+                self.running_var,
+                extra, 
+                self.sync, 
+                self.training, 
+                self.momentum, 
+                self.eps,
+                self.activation, 
+                self.slope).view(input_shape)
+        else:
+            return syncbatchnorm(
+                x, 
+                self.weight, 
+                self.bias, 
+                self.running_mean, 
+                self.running_var,
+                extra, 
+                self.sync, 
+                self.training, 
+                self.momentum, 
+                self.eps,
+                self.activation, 
+                self.slope).view(input_shape)
+
+    def extra_repr(self):
+        if self.activation == 'none':
+            return 'sync={}'.format(self.sync)
+        else:
+            return 'sync={}, act={}, slope={}, inplace={}'.format(
+                self.sync, self.activation, self.slope, self.inplace
+            )
+```
